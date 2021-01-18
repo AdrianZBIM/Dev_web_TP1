@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{# Have a look at base.html as well to understand how templating works ;)  #}
+
+{% block content %}
+
+<h1>About page</h1>
+
+<p>Today is {{ context['day'] }} / {{ context['date'] }}.</p>
+
+{% set date = context['date'] %}
+{% set time = context['time'] %}
+
+<p>{% if date.hour|int < 12 and date.hour > 5 %}Good morning!
+{% elif date.hour|int >= 18 and date.hour|int < 22 %}Good evening!
+{% elif date.hour|int >= 22 %}Good night!
+{% endif %} It's {{time}} !</p>
+
+{% if date.year > 2020 %}<p>Houray 2020 is over \o/ now let's hope it'll get better in {{date.year}}…</p>{% endif %}
+
+{% endblock %}

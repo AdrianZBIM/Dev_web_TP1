@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{ page_title|default('BioInfo 4A Web dev Introdution') }}</title>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+{% block head %}{% endblock %}
+  </head>
+  <body>
+    <ul>
+      <li><a href="{{ url_for('index') }}#home">Home</a></li>
+      <li><a href="{{ url_for('users') }}">Users</a></li>
+      <li><a href="{{ url_for('about') }}">About</a></li>
+      <li style="float:right">
+        <form class="" method="get" action="/search/">
+          <input class="" placeholder="Search" type="text" name="pattern">
+          <button class="" type="submit">Search</button>
+        </form>
+      </li>
+    </ul>
+
+{% block content %}{% endblock %}
+
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+  </body>
+</html>

@@ -1,0 +1,5 @@
+# files
+database.db
+# dir
+__pycache__
+venv
