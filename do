@@ -63,28 +63,7 @@ serve () {
 }
 
 shell () {
-  #FLASK_APP=app FLASK_ENV=development "${VENV}/bin/flask" shell -i -c "import app"
   FLASK_APP=app FLASK_ENV=development "${VENV}/bin/flask" shell -i -c "import app"
-}
-
-
-sync () {
-  TMP_SSHFS=$(mktemp -d)
-  echo "mounting on ${TMP_SSHFS}"
-  sshfs ssh.azylum.org:/home/kaliko/var/www/prograweb ${TMP_SSHFS} || { rmdir ${TMP_SSHFS}; return 1; }
-  cd ${TMP_SSHFS}/Découverte_Flask/
-  git clean -fd
-  git checkout -- ./
-  git checkout solutions
-  git pull
-  cd ~
-  fusermount -u ${TMP_SSHFS} || return 2
-  rmdir ${TMP_SSHFS}
-}
-
-azylum () {
-  ${PIP} install gunicorn
-  ${VENV}/bin/gunicorn --reload -w 4 -b 0.0.0.0:8800 app:app
 }
 
 if [ ! -e "${VENV}/bin/activate" ];then
