@@ -46,8 +46,17 @@ def hello_world():
     app.logger.debug('Hello world')
     app.logger.debug('Here is the request I got: {}'.format(request))
     app.logger.debug('Here is the headers I got: {}'.format([k for k in request.headers.keys()]))
-    resp = make_response('Hello world\n')
-    return resp
+    app.logger.debug(request.headers["Accept-Language"][0:2])
+    if request.headers["Accept-Language"] and request.headers["Accept-Language"][0:2] in HELLO_STRINGS:
+    	resp = make_response(HELLO_STRINGS[request.headers["Accept-Language"][0:2]])
+    	resp.headers["Content-Language"] = request.headers["Accept-Language"]
+    	
+    else:
+    	resp = make_response(HELLO_STRINGS["en"])
+    resp.headers["Content-Type"] = "text/plain"
+    resp.headers["X-Less"] = "Is More"
+    #abort(404)
+    return resp, 1312
 
 
 @app.route('/')
@@ -72,7 +81,7 @@ def about():
     tpl_context.update({'date': today})
     # Now let's see how the context looks like
     app.logger.debug('About Context: {}'.format(tpl_context))
-    return render_template('about.html', context=tpl_context)
+    return render_template('about.html', page_title = "About page", context=tpl_context)
 
 
 @app.route('/users')
