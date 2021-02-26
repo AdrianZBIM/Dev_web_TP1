@@ -52,7 +52,7 @@ shell () {
   FLASK_APP=app FLASK_ENV=development "${FLASK}" shell -i -c "import app"
 }
 
-if [ -x ${FLASK} ];then
+if [ ! -x ${FLASK} ];then
   pip3 install flask-shell-ipython Flask==1.1.1
 fi
 
