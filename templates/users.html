@@ -1,8 +1,33 @@
 {% extends 'base.html' %}
 {% block content %}
-      <h1 class="mt-5">Users</h1>
-      <div class="alert alert-info" role="alert">
-        <p class="lead">Use Jinja templating system to produce a list of users in the SQL database.<br />
+    
+    {% if username != None %}
+    <h1 class="mt-5">{{ username['name']}}</h1>
+      	<ul id="display_user">
+	        <li>
+	        	Nom : {{ username['name'] }}
+	    	</li></br>
+
+	        <li>
+	        	Date de naissance : {{ username['birth'] }}
+	    	</li></br>
+	        <li>
+	        	Sexe : {{ username['gender']}}
+	    	</li></br>
+    	</ul>
+    	{% else %}
+    	<h1 class="mt-5">Users</h1>
+    	<ul id="User_names">
+		    {% for item in dic_user %}
+		        <li>
+		        	<a href="users/{{ item['name'] }}"> {{ item['name'] }}, {{ item['birth'] }},  {{ item['gender']}}</a> 
+		        </li>
+		    {% endfor %}
+    	</ul>
+	{% endif %}
+
+	<div class="alert alert-info" role="alert">
+		<p class="lead">Use Jinja templating system to produce a list of users in the SQL database.<br />
         Follow the documentation: <a href="https://flask.palletsprojects.com/en/1.1.x/quickstart/#rendering-templates">flask.palletsprojects.com/en/1.1.x/quickstart/#rendering-templates</a>.
       </div>
 {% endblock %}

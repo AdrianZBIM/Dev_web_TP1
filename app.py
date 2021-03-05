@@ -85,11 +85,21 @@ def about():
 
 
 @app.route('/users')
+
 @app.route('/users/<username>/')
 def users(username=None):
-    if not username:
-        return render_template('users.html')
-    abort(404)
+	app.logger.debug(username, "nom renvoyé")
+	app.logger.debug(get_users({"name": username}))
+	if (not username):
+		dic_user = get_users()
+		app.logger.debug("on entre dans username global")
+		return render_template("users.html", page_title = "<username>", dic_user = dic_user, username = username)
+	elif get_users({"name": username}):
+		app.logger.debug("on entre dans username spécifique")
+		username = get_users({"name": username})
+		return render_template("users.html", page_title = "<username>",  username = username)
+	else:
+		abort(404)
 
 
 @app.route('/search/', methods=['GET'])
