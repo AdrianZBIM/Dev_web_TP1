@@ -6,11 +6,11 @@
 {% block head %}{% endblock %}
   </head>
   <body>
-    <ul>
-      <li><a href="{{ url_for('index') }}#home">Home</a></li>
-      <li><a href="{{ url_for('users') }}">Users</a></li>
-      <li><a href="{{ url_for('about') }}">About</a></li>
-      <li style="float:right">
+    <ul id="navbarMenu">
+      <li class="navItem"><a href="{{ url_for('index') }}#home">Home</a></li>
+      <li class="navItem"><a href="{{ url_for('users') }}">Users</a></li>
+      <li class="navItem"><a href="{{ url_for('about') }}">About</a></li>
+      <li class="navItem" style="float:right">
         <form class="" method="get" action="/search/">
           <input class="" placeholder="Search" type="text" name="pattern">
           <button class="" type="submit">Search</button>

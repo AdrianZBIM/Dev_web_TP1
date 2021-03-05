@@ -44,7 +44,7 @@ get_libs () {
 }
 
 serve () {
-  FLASK_APP=app FLASK_ENV=development ${FLASK} run
+  FLASK_APP=app FLASK_ENV=development FLASK_RUN_PORT=8000 ${FLASK} run
   #DEBUG=Y "${PYTHON3}" "${ROOT}/app.py"
 }
 
