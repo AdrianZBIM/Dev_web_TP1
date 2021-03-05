@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 # coding: utf-8
 
-from flask import Flask, g
+from flask import Flask, url_for, g
 from flask import abort, request, make_response
 from flask import render_template
+from markupsafe import escape
 
 from dbmgmt import get_users, add_user, mod_user
 
@@ -93,22 +94,25 @@ def users(username=None):
 	if (not username):
 		dic_user = get_users()
 		app.logger.debug("on entre dans username global")
-		return render_template("users.html", page_title = "<username>", dic_user = dic_user, username = username)
+		return render_template("users.html", page_title = "Users",  username = username, dic_user = dic_user)
 	elif get_users({"name": username}):
 		app.logger.debug("on entre dans username spécifique")
 		username = get_users({"name": username})
-		return render_template("users.html", page_title = "<username>",  username = username)
+		return render_template("users.html", page_title = username['name'],  username = username)
 	else:
-		abort(404)
+		abort(404, "Pas d'user avec le nom donné")
 
 
 @app.route('/search/', methods=['GET'])
 def search():
-    app.logger.debug(request.args)
-    abort(make_response('Not implemented yet ;)', 501))
-
-
-# Script starts here
+	app.logger.debug(request.args)
+	app.logger.debug(request.args["pattern"])
+	if get_users({"name": request.args["pattern"]}):
+		trouve = get_users({"name": request.args["pattern"]})
+	else:
+		trouve = None
+	return render_template("users.html", page_title = request.args["pattern"], trouve = trouve,  search = request.args["pattern"])
+	# Script starts here
 if __name__ == '__main__':
     from dbmgmt import init_db
     init_db()
