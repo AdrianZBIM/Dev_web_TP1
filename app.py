@@ -85,22 +85,33 @@ def about():
     return render_template('about.html', page_title = "About page", context=tpl_context)
 
 
-@app.route('/users')
+@app.route('/users', methods = ['GET', 'POST'])
 
 @app.route('/users/<username>/')
 def users(username=None):
 	app.logger.debug(username, "nom renvoyé")
 	app.logger.debug(get_users({"name": username}))
-	if (not username):
+	#On ajoute des utilisateurs
+	if request.method == 'POST':
+		add_user({"name" : request.form["name"], "birth":  request.form["birth"], "gender":  request.form["gender"]})
 		dic_user = get_users()
 		app.logger.debug("on entre dans username global")
 		return render_template("users.html", page_title = "Users",  username = username, dic_user = dic_user)
-	elif get_users({"name": username}):
-		app.logger.debug("on entre dans username spécifique")
-		username = get_users({"name": username})
-		return render_template("users.html", page_title = username['name'],  username = username)
+
+	#On veut les afficher :
 	else:
-		abort(404, "Pas d'user avec le nom donné")
+		if (not username):
+			dic_user = get_users()
+			app.logger.debug("on entre dans username global")
+			return render_template("users.html", page_title = "Users",  username = username, dic_user = dic_user)
+		elif get_users({"name": username}):
+			app.logger.debug("on entre dans username spécifique")
+			username = get_users({"name": username})
+			return render_template("users.html", page_title = username['name'],  username = username)
+		else:
+			abort(404, "Pas d'user avec le nom donné")
+
+
 
 
 @app.route('/search/', methods=['GET'])
@@ -108,11 +119,19 @@ def search():
 	app.logger.debug(request.args)
 	app.logger.debug(request.args["pattern"])
 	if get_users({"name": request.args["pattern"]}):
+
 		trouve = get_users({"name": request.args["pattern"]})
+		app.logger.debug(trouve)
 	else:
 		trouve = None
+		app.logger.debug(trouve)
 	return render_template("users.html", page_title = request.args["pattern"], trouve = trouve,  search = request.args["pattern"])
-	# Script starts here
+	
+
+
+
+
+# Script starts here
 if __name__ == '__main__':
     from dbmgmt import init_db
     init_db()
