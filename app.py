@@ -129,7 +129,10 @@ def search():
 	
 
 
-
+@app.route('/users_api/', methods=['GET'])
+def users_api():
+	return render_template("users_api.html", page_title = "Users_api")
+	
 
 # Script starts here
 if __name__ == '__main__':
